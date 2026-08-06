@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "TRACECRAFT 操作环节 × Skill / 分析技术",
+    "subtitle": "每个操作节点对应实际 Skill、证据处理方法与质量门禁",
+    "visual_preset": "blueprint",
+    "quality_profile": "showcase",
+    "output": "tracecraft-skill-technique-map.html",
+    "viewBox": [1280, 900]
+  },
+  "lanes": [
+    { "id": "operations", "label": "平台操作" },
+    { "id": "core", "label": "核心 Skill" },
+    { "id": "quality", "label": "证据与门禁" },
+    { "id": "governance", "label": "反馈治理" },
+    { "id": "optional", "label": "条件 / 可选 Skill" }
+  ],
+  "phases": [
+    { "id": "evidence", "label": "材料证据化", "fromCol": 0, "toCol": 1 },
+    { "id": "analysis", "label": "结构化理解", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "review", "label": "评审与进化", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "groups": [
+    { "id": "requirement_engine", "label": "需求解析生产链", "lane": "core", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "quality_gates", "label": "可追溯质量门禁", "lane": "quality", "fromCol": 0, "toCol": 4, "variant": "security" },
+    { "id": "optional_engines", "label": "按条件启用", "lane": "optional", "fromCol": 3, "toCol": 5, "variant": "dashed" }
+  ],
+  "mainPath": [
+    "material_operation",
+    "source_evidence",
+    "analysis_operation",
+    "designer_skill",
+    "quality_gate",
+    "review_operation",
+    "design_review_skill",
+    "closure_optimizer"
+  ],
+  "nodes": [
+    { "id": "material_operation", "lane": "operations", "col": 0, "type": "frontend", "label": "上传需求", "sublabel": "保存完整原文", "tag": "O1" },
+    { "id": "source_evidence", "lane": "quality", "col": 1, "type": "database", "label": "原文索引", "sublabel": "编号与覆盖账本", "tag": "T1" },
+    { "id": "analysis_operation", "lane": "operations", "col": 2, "type": "frontend", "label": "开始解析", "sublabel": "继承历史基线", "tag": "O2" },
+    { "id": "designer_skill", "lane": "core", "col": 3, "type": "backend", "label": "需求解析", "sublabel": "泳道·A-F·页流", "tag": "S1", "width": 80 },
+    { "id": "quality_gate", "lane": "quality", "col": 3, "type": "security", "label": "完整度门禁", "sublabel": "产物一致才发布", "tag": "T2" },
+    { "id": "review_operation", "lane": "operations", "col": 4, "type": "frontend", "label": "发起评审", "sublabel": "设计与需求对照", "tag": "O3" },
+    { "id": "design_review_skill", "lane": "core", "col": 5, "type": "backend", "label": "基础评审 Skill", "sublabel": "符合性与问题定位", "tag": "S3" },
+    { "id": "closure_optimizer", "lane": "governance", "col": 5, "type": "messagebus", "label": "处置与优化", "sublabel": "快照、统计、候选规则", "tag": "O4 / S6" },
+    { "id": "wireframe_skill", "lane": "optional", "col": 3, "type": "external", "label": "线稿 Skill", "sublabel": "字段与导航转 SVG", "tag": "S2" },
+    { "id": "conditional_review", "lane": "optional", "col": 5, "type": "cloud", "label": "增强评审", "sublabel": "原文 UX、UI、竞品", "tag": "S4 / S5 / T3" }
+  ],
+  "edges": [
+    { "id": "material_index", "from": "material_operation", "to": "source_evidence", "role": "main", "variant": "default" },
+    { "id": "index_analyze", "from": "source_evidence", "to": "analysis_operation", "role": "main", "variant": "emphasis", "fromSide": "right", "toSide": "bottom" },
+    { "id": "analyze_skill", "from": "analysis_operation", "to": "designer_skill", "role": "main", "variant": "emphasis" },
+    { "id": "skill_gate", "from": "designer_skill", "to": "quality_gate", "role": "main", "variant": "security" },
+    { "id": "gate_review", "from": "quality_gate", "to": "review_operation", "role": "main", "variant": "default", "fromSide": "right", "toSide": "bottom" },
+    { "id": "review_base", "from": "review_operation", "to": "design_review_skill", "role": "main", "variant": "emphasis" },
+    { "id": "base_close", "from": "design_review_skill", "to": "closure_optimizer", "role": "main", "variant": "default" },
+    { "id": "analysis_wireframe", "from": "quality_gate", "to": "wireframe_skill", "role": "branch", "variant": "dashed" },
+    { "id": "review_enhance", "from": "closure_optimizer", "to": "conditional_review", "role": "branch", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "编号对应",
+      "items": [
+        "S1 designer-requirement-analysis-html",
+        "S2 wireframe-design；S3 design-review",
+        "S4 validate-user-experience；S5 review-ui-design",
+        "S6 requirement / review feedback optimizer"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "分析技术对应",
+      "items": [
+        "T1 DOCX 结构提取、Rxxx 原文编号、覆盖账本",
+        "T2 产物完整性、页面对应、来源覆盖与 HTML 一致性校验",
+        "T3 竞品表格 / 图片证据抽取与独立对比",
+        "设计评审使用真实文本锚点和归一化坐标定位问题"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "条件分流",
+      "items": [
+        "已解析：S3 基于结构化需求证据评审",
+        "未解析：S4 基于完整原文验证任务成功和证据缺口",
+        "用户勾选：S5 补充视觉、交互、设计系统和无障碍检查",
+        "有竞品材料：T3 只补充遗漏和优化机会"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "反馈治理边界",
+      "items": [
+        "意见处置形成采纳状态、理由和不可变版本快照",
+        "统计覆盖采纳率、产品维度与月度趋势",
+        "优化器区分通用缺陷、项目特例、误报和排期因素",
+        "只生成候选报告，不直接修改生产 Skill"
+      ]
+    }
+  ]
+}

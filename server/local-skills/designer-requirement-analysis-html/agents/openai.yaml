@@ -1,0 +1,4 @@
+interface:
+  display_name: "设计师需求解析 HTML"
+  short_description: "面向设计师完整解析需求并生成设计要点、风险与竞品分析 HTML"
+  default_prompt: "使用 $designer-requirement-analysis-html 完整解析需求文档，并生成可供设计师评审的三模块 HTML。"

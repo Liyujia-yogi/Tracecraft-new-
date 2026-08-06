@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "TRACECRAFT 平台使用流程",
+    "subtitle": "从需求材料到评审快照；主路清晰展示，次要路径按入口就近分支",
+    "visual_preset": "editorial",
+    "quality_profile": "showcase",
+    "output": "tracecraft-platform-workflow.html",
+    "viewBox": [1280, 920]
+  },
+  "lanes": [
+    { "id": "user", "label": "产品 / 设计团队" },
+    { "id": "direct", "label": "次要路径" },
+    { "id": "analysis", "label": "需求解析" },
+    { "id": "review", "label": "设计评审" },
+    { "id": "optional", "label": "可选增强" },
+    { "id": "competitor", "label": "竞品增强" }
+  ],
+  "phases": [
+    { "id": "prepare", "label": "进入与准备", "fromCol": 0, "toCol": 1 },
+    { "id": "understand", "label": "理解需求", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "evaluate", "label": "评审与收口", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "groups": [
+    { "id": "analysis_versions", "label": "解析版本链", "lane": "analysis", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "review_versions", "label": "评审版本链", "lane": "review", "fromCol": 3, "toCol": 5, "variant": "default" },
+    { "id": "optional_inputs", "label": "线稿增强", "lane": "optional", "fromCol": 2, "toCol": 2, "variant": "dashed" }
+  ],
+  "mainPath": [
+    "enter",
+    "create_requirement",
+    "analyze_requirement",
+    "upload_design",
+    "launch_review",
+    "handle_issues",
+    "save_snapshot"
+  ],
+  "nodes": [
+    { "id": "enter", "lane": "user", "col": 0, "type": "frontend", "label": "进入工作台", "sublabel": "登录并选择任务", "tag": "起点" },
+    { "id": "create_requirement", "lane": "user", "col": 1, "type": "frontend", "label": "创建需求", "sublabel": "上传 MD / DOCX" },
+    { "id": "analyze_requirement", "lane": "analysis", "col": 2, "type": "backend", "label": "完整解析", "sublabel": "结构化需求证据", "tag": "默认主路" },
+    { "id": "upload_design", "lane": "review", "col": 3, "type": "frontend", "label": "设计", "width": 40 },
+    { "id": "launch_review", "lane": "review", "col": 4, "type": "backend", "label": "评审", "width": 40 },
+    { "id": "handle_issues", "lane": "user", "col": 4, "type": "frontend", "label": "处理意见", "sublabel": "逐条给出结论" },
+    { "id": "save_snapshot", "lane": "review", "col": 5, "type": "database", "label": "保存快照", "sublabel": "锁定评审版本" },
+    { "id": "raw_review", "lane": "direct", "col": 3, "type": "external", "label": "原文直评", "sublabel": "跳过需求解析" },
+    { "id": "wireframe", "lane": "optional", "col": 2, "type": "external", "label": "生成线稿", "sublabel": "输出低保真 SVG" },
+    { "id": "competitor_input", "lane": "competitor", "col": 3, "type": "cloud", "label": "竞品材料", "sublabel": "补充优化证据" }
+  ],
+  "edges": [
+    { "id": "enter_create", "from": "enter", "to": "create_requirement", "role": "main", "variant": "default" },
+    { "id": "create_analyze", "from": "create_requirement", "to": "analyze_requirement", "role": "main", "variant": "emphasis", "fromSide": "right", "toSide": "top" },
+    { "id": "analyze_upload", "from": "analyze_requirement", "to": "upload_design", "role": "main", "variant": "emphasis" },
+    { "id": "upload_launch", "from": "upload_design", "to": "launch_review", "role": "main", "variant": "default", "route": "straight" },
+    { "id": "launch_handle", "from": "launch_review", "to": "handle_issues", "role": "main", "variant": "default" },
+    { "id": "handle_save", "from": "handle_issues", "to": "save_snapshot", "role": "main", "variant": "emphasis" },
+    { "id": "analysis_wireframe", "from": "analyze_requirement", "to": "wireframe", "role": "branch", "variant": "dashed" },
+    { "id": "direct_review", "from": "create_requirement", "to": "raw_review", "role": "branch", "variant": "dashed" },
+    { "id": "raw_to_design", "from": "raw_review", "to": "upload_design", "role": "return", "variant": "dashed" },
+    { "id": "competitor_branch", "from": "upload_design", "to": "competitor_input", "role": "branch", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "默认主任务",
+      "items": [
+        "上传需求并完成结构化解析",
+        "上传设计稿并发起新一轮评审",
+        "在列表或页面定位视图逐条处置意见",
+        "保存后形成不可修改的评审快照"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "次要与可选路径",
+      "items": [
+        "需求未解析时，可基于完整原文直接评审",
+        "待确认项、需求改稿和反馈可触发重新解析",
+        "解析结果可生成低保真 SVG 线稿",
+        "竞品材料和 UI 专家评审均按需追加"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "闭环与保护",
+      "items": [
+        "解析、设计、竞品与评审分别版本化",
+        "临时评审可放弃，已保存评审不可修改",
+        "历史解析可恢复为新版本",
+        "反馈、采纳率和统计进入候选 Skill 优化"
+      ]
+    }
+  ]
+}

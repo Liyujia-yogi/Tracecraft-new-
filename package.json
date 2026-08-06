@@ -1,0 +1,43 @@
+{
+  "name": "design-intelligence-platform",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"node --watch server/index.mjs\" \"vite\"",
+    "server": "node server/index.mjs",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "check": "vue-tsc -b --pretty false",
+    "pipeline-smoke": "node server/pipeline-smoke-test.mjs",
+    "skill-runner-smoke": "node server/local-skill-runner-smoke-test.mjs",
+    "review-pipeline-smoke": "node server/design-review-pipeline-smoke-test.mjs",
+    "competitor-evidence-smoke": "node server/competitor-evidence-smoke-test.mjs",
+    "skill-contract-smoke": "node server/skill-api-contract-normalization-smoke-test.mjs",
+    "review-workflow-smoke": "node server/review-workflow-smoke-test.mjs",
+    "feedback-storage-smoke": "node server/feedback-storage-smoke-test.mjs",
+    "delete-smoke": "node server/requirements-delete-smoke-test.mjs",
+    "visual-check": "node server/visual-check.mjs"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "cookie-parser": "^1.4.7",
+    "element-plus": "^2.14.3",
+    "express": "^5.1.0",
+    "jszip": "^3.10.1",
+    "mammoth": "^1.9.1",
+    "multer": "^2.0.1",
+    "vue": "^3.5.40",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
+    "concurrently": "^9.2.0",
+    "playwright-core": "^1.62.0",
+    "typescript": "^5.8.3",
+    "unplugin-auto-import": "^21.1.0",
+    "unplugin-vue-components": "^32.1.0",
+    "vite": "^7.0.4",
+    "vue-tsc": "^3.3.9"
+  }
+}
